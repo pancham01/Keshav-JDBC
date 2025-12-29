@@ -15,6 +15,8 @@ public class EmployeeRunner {
 		Employee emp = new Employee(4, "Sunny", "female", 67000);
 		
 
+		edao.printAllEmps();
+		
 		System.out.println("Query executed...............");
 
 	}
