@@ -13,6 +13,7 @@ import com.keshav.entity.Employee;
 public class EmployeeDaoImpl implements EmployeeDao {
 
 	private static final String INSERT_QUERY = "INSERT INTO EMPLOYEE (ID,NAME,GENDER,SALARY) VALUES(?,?,?,?)";
+	private static final String UPDATE_QUERY = "UPDATE EMPLOYEE SET NAME = ? , GENDER = ? , SALARY = ? WHERE ID = ?";
 	private static final String SELECT_QUERY = "SELECT * FROM EMPLOYEE";
 	private static final String SELECT_BY_NAME = "SELECT * FROM EMPLOYEE WHERE NAME = '%s'";
 
@@ -49,27 +50,19 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
 	}
 
-	
-	@Override
-	public void printAllEmps() throws SQLException {
-
-		Statement statement = connection.createStatement();
-//		statement.executeQuery(SELECT_QUERY);
-		ResultSet resultSet = statement.executeQuery("SELECT * FROM EMPLOYEE");
-
-		while (resultSet.next()) {
-			System.out.println("ID = " + resultSet.getInt(1) + "\t NAME = " + resultSet.getString(2) + "\t GENDER = "
-					+ resultSet.getString(3) + "\t SALARY = " + resultSet.getInt(4));
-		}
-		System.err.println(SELECT_QUERY);
-
-	}
-
 
 	@Override
 	public void updateEmp(Employee e) throws SQLException {
-		// TODO Auto-generated method stub
-		
+		PreparedStatement ps = connection.prepareStatement(UPDATE_QUERY);
+
+			ps.setString(1, e.getName());
+			ps.setString(2, e.getGender());
+			ps.setInt(3, e.getSalary());
+			ps.setInt(4, e.getId());
+			
+			ps.executeUpdate();
+			
+			
 	}
 
 
@@ -107,4 +100,18 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		return null;
 	}
 
+	@Override
+	public void printAllEmps() throws SQLException {
+
+		Statement statement = connection.createStatement();
+//		statement.executeQuery(SELECT_QUERY);
+		ResultSet resultSet = statement.executeQuery("SELECT * FROM EMPLOYEE");
+
+		while (resultSet.next()) {
+			System.out.println("ID = " + resultSet.getInt(1) + "\t NAME = " + resultSet.getString(2) + "\t GENDER = "
+					+ resultSet.getString(3) + "\t SALARY = " + resultSet.getInt(4));
+		}
+		System.err.println(SELECT_QUERY);
+
+	}
 }

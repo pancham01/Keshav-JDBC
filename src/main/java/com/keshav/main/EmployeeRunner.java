@@ -12,11 +12,13 @@ public class EmployeeRunner {
 		
 		EmployeeDao edao = new EmployeeDaoImpl();
 
-		Employee emp = new Employee(14, "Sunny", "female", 67000);
+		Employee emp = new Employee(13, "Kushal Mangal", "Male", 67000);
 		
 
-		edao.saveEmpByPS(emp);
+//		edao.saveEmpByPS(emp);
+		edao.updateEmp(emp);
 		
+		edao.printAllEmps();
 		
 		System.out.println("Query executed...............");
 
