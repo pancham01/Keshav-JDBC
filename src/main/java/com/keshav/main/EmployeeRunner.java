@@ -12,11 +12,15 @@ public class EmployeeRunner {
 		
 		EmployeeDao edao = new EmployeeDaoImpl();
 
-		Employee emp = new Employee(4, "Sunny", "female", 67000);
+//		Employee emp = new Employee(4, "Sunny", "female", 67000);
 		
 
-		edao.printAllEmps();
+//		edao.printAllEmps();
 		
+//		System.out.println(edao.getEmpById(3));
+//		System.out.println(edao.getEmpByName("Sunny"));
+		
+		edao.printEmpByName("Sunny' or '1=1");
 		System.out.println("Query executed...............");
 
 	}
