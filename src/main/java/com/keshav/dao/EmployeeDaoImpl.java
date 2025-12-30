@@ -2,6 +2,7 @@ package com.keshav.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,13 +12,9 @@ import com.keshav.entity.Employee;
 
 public class EmployeeDaoImpl implements EmployeeDao {
 
-	private static final String INSERT_QUERY = "INSERT INTO EMPLOYEE (ID,NAME,GENDER,SALARY) VALUES(%d,'%s','%s',%d)";
-	private static final String UPDATE_QUERY = "UPDATE EMPLOYEE SET NAME = '%s',GENDER = '%s', SALARY= %d WHERE ID = %d";
-	private static final String DELETE_QUERY = "DELETE FROM EMPLOYEE WHERE ID = %d";
+	private static final String INSERT_QUERY = "INSERT INTO EMPLOYEE (ID,NAME,GENDER,SALARY) VALUES(?,?,?,?)";
 	private static final String SELECT_QUERY = "SELECT * FROM EMPLOYEE";
-	private static final String SELECT_BY_ID = "SELECT * FROM EMPLOYEE WHERE ID = %d";
 	private static final String SELECT_BY_NAME = "SELECT * FROM EMPLOYEE WHERE NAME = '%s'";
-//	private static final String SELECT_BY_NAME = "SELECT * FROM EMPLOYEE WHERE NAME = 'Sunny' or '1=1'";
 
 	static Connection connection = null;
 
@@ -34,94 +31,25 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	}
 
 	@Override
-	public void saveEmp(Employee e) {
+	public void saveEmpByPS(Employee e) {
 
-		try (Statement statement = connection.createStatement()) {
+		try (PreparedStatement ps = connection.prepareStatement("INSERT INTO EMPLOYEE (ID,NAME,GENDER,SALARY) VALUES(?,?,?,?)")) {
 
-			statement.executeUpdate(String.format(INSERT_QUERY, e.getId(), e.getName(), e.getGender(), e.getSalary()));
-			System.out.println("insert into employee(id,name,gender,salary) values (" + e.getId() + ",'" + e.getName()
-					+ "','" + e.getGender() + "'," + e.getSalary() + ")");
-
+			ps.setInt(1, e.getId());
+			ps.setString(2, e.getName());
+			ps.setString(3, e.getGender());
+			ps.setInt(4, e.getSalary());
+			
+			ps.executeUpdate();
+			
+			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 
 	}
 
-	@Override
-	public void updateEmp(Employee e) throws SQLException {
-		Statement statement = connection.createStatement();
-		statement.executeUpdate(String.format(UPDATE_QUERY, e.getName(), e.getGender(), e.getSalary(), e.getId()));
-		System.out.println(String.format(UPDATE_QUERY, e.getName(), e.getGender(), e.getSalary(), e.getId()));
-
-	}
-
-	@Override
-	public void deleteEmpById(int id) throws SQLException {
-		Statement statement = connection.createStatement();
-		statement.executeUpdate(String.format(DELETE_QUERY, id));
-		System.out.println(String.format(DELETE_QUERY, id));
-	}
-
-	@Override
-	public Employee getEmpById(int id) throws SQLException {
-
-		Statement statement = connection.createStatement();
-		ResultSet resultSet = statement.executeQuery(String.format(SELECT_BY_ID, id));
-		Employee e = null;
-
-		if (resultSet.next()) {
-			
-			e = new Employee();
-			e.setId(resultSet.getInt(1));
-			e.setName(resultSet.getString(2));
-			e.setGender(resultSet.getString(3));
-			e.setSalary(resultSet.getInt(4));
-		}
-		System.err.println(String.format(SELECT_BY_ID, id));
-		return e;
-	}
-
-	@Override
-	public Employee getEmpByName(String name)throws SQLException {
-
-		Statement statement = connection.createStatement();
-		ResultSet resultSet = statement.executeQuery(String.format(SELECT_BY_NAME, name));
-		Employee e = null;
-
-		if (resultSet.next()) {
-			e = new Employee();
-			e.setId(resultSet.getInt(1));
-			e.setName(resultSet.getString(2));
-			e.setGender(resultSet.getString(3));
-			e.setSalary(resultSet.getInt(4));
-		}
-		
-		
-		System.err.println(String.format(SELECT_BY_NAME, name));
-		return e;
-	}
 	
-	
-	public void printEmpByName(String name)throws SQLException {
-
-		Statement statement = connection.createStatement();
-		ResultSet resultSet = statement.executeQuery(String.format(SELECT_BY_NAME, name));
-
-		while (resultSet.next()) {
-			System.out.println("ID = " + resultSet.getInt(1) + "\t NAME = " + resultSet.getString(2) + "\t GENDER = "
-					+ resultSet.getString(3) + "\t SALARY = " + resultSet.getInt(4));
-		}
-		
-		System.err.println(String.format(SELECT_BY_NAME, name));
-	}
-
-	@Override
-	public List<Employee> getAllEmps() {
-
-		return null;
-	}
-
 	@Override
 	public void printAllEmps() throws SQLException {
 
@@ -135,6 +63,48 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		}
 		System.err.println(SELECT_QUERY);
 
+	}
+
+
+	@Override
+	public void updateEmp(Employee e) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void deleteEmpById(int id) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public Employee getEmpById(int id) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Employee getEmpByName(String name) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void printEmpByName(String name) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public List<Employee> getAllEmps() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -7,7 +7,7 @@ import com.keshav.entity.Employee;
 
 public interface EmployeeDao {
 
-	public void saveEmp(Employee e);
+	public void saveEmpByPS(Employee e);
 
 	public void updateEmp(Employee e) throws SQLException;
 
